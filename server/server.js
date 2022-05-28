@@ -4,6 +4,7 @@ const flash = require('express-flash')
 const morgan = require('morgan')
 const http = require('http')
 const passport = require('passport')
+
 //const MongoStore = require('connect-mongo')(session)
 const MongoStore = require('connect-mongo')
 const { default: mongoose } = require('mongoose')
@@ -14,11 +15,16 @@ mongoose.connect("mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.
 
 const app = express()
 const server = http.createServer(app)
+const io = require('socket.io')(server)
 //add session
 //add Logger
 //add morgan
 //add passport session and initalise
 app.set('view engine','ejs')
+app.set('socketio',io)
+io.on("connection",(socket)=>{
+    socket.emit("id",socket.id)
+})
 const screenrouter = require('../routes/screens.router')
 app.use(express.urlencoded({
     extended:true
