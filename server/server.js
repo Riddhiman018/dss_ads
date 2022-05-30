@@ -4,7 +4,7 @@ const flash = require('express-flash')
 const morgan = require('morgan')
 const http = require('http')
 const passport = require('passport')
-
+const {Server} = require('socket.io')
 //const MongoStore = require('connect-mongo')(session)
 const MongoStore = require('connect-mongo')
 const { default: mongoose } = require('mongoose')
@@ -15,30 +15,44 @@ mongoose.connect("mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.
 
 const app = express()
 const server = http.createServer(app)
-const io = require('socket.io')(server)
 //add session
 //add Logger
 //add morgan
 //add passport session and initalise
 app.set('view engine','ejs')
-app.set('socketio',io)
-io.on("connection",(socket)=>{
-    socket.emit("id",socket.id)
-})
 const screenrouter = require('../routes/screens.router')
 app.use(express.urlencoded({
     extended:true
 }))
+app.use(express.static(`${__dirname}/staticfiles`))
 app.use(flash())
 const strategy = require('../config/passport')
 strategy(passport)
 app.use(session({
-    saveUninitialized:false,
+    saveUninitialized:true,
     resave:true,
     secret:'SECRETVALUE',
     store: MongoStore.create({mongoUrl:uri})
 }))
+const io = new Server(server)
+io.on("connection",(socket)=>{
+    socket.on("connectClient",(obj)=>{
+        const clientID = obj.id
+        console.log(obj.id);
+        io.emit(`${clientID}`,{
+            clientID:clientID
+        });
+    })
+    socket.on(`connect-to-db`,(obj)=>{
+        console.log(clientID);
+        console.log(obj.id);
+        if(obj.id==obj.clientID){
+            console.log(obj.id + 'Namaste');
+        }
+    })
 
+})
+app.set('socketio',io)
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(screenrouter)
@@ -46,5 +60,4 @@ app.use(require('../routes/user.router'))
 server.listen(4000,()=>{
     console.log('Running...');
 })
-
 
