@@ -8,6 +8,7 @@ const {Server} = require('socket.io')
 //const MongoStore = require('connect-mongo')(session)
 const MongoStore = require('connect-mongo')
 const { default: mongoose } = require('mongoose')
+const cors = require('cors')
 
 //dbconnection
 const uri = "mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.mongodb.net/?retryWrites=true&w=majority"
@@ -18,6 +19,7 @@ const app = express()
 //add Logger
 //add morgan
 //add passport session and initalise
+app.use(cors())
 app.set('view engine','ejs')
 const screenrouter = require('../routes/screens.router')
 app.use(express.urlencoded({
