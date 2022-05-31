@@ -25,15 +25,15 @@ app.use(express.urlencoded({
     extended:true
 }))
 app.use(express.static(`${__dirname}/staticfiles`))
-app.use(flash())
-const strategy = require('../config/passport')
-strategy(passport)
-app.use(session({
-    saveUninitialized:true,
-    resave:true,
-    secret:'SECRETVALUE',
-    store: MongoStore.create({mongoUrl:uri})
-}))
+// app.use(flash())
+// const strategy = require('../config/passport')
+// strategy(passport)
+// app.use(session({
+//     saveUninitialized:true,
+//     resave:true,
+//     secret:'SECRETVALUE',
+//     store: MongoStore.create({mongoUrl:uri})
+// }))
 const io = new Server(server)
 io.on("connection",(socket)=>{
     socket.on("connectClient",(obj)=>{
@@ -53,8 +53,8 @@ io.on("connection",(socket)=>{
 
 })
 app.set('socketio',io)
-app.use(passport.initialize())
-app.use(passport.session())
+// app.use(passport.initialize())
+// app.use(passport.session())
 app.use(screenrouter)
 app.use(require('../routes/user.router'))
 const port = 4000||process.env.PORT
