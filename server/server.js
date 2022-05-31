@@ -40,7 +40,7 @@ app.use(express.static(`${__dirname}/staticfiles`))
 app.use(screenrouter)
 app.use(require('../routes/user.router'))
 
-const port = 4000||process.env.PORT
+const port = process.env.PORT||4000
 const server = http.createServer(app)
 server.listen(port,()=>{
     console.log('Running...');
