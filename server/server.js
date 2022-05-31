@@ -58,10 +58,15 @@ io.on("connection",(socket)=>{
     })
     socket.on(`connect-to-db`,(obj)=>{
         console.log('Socket post from mobile');
-        console.log(clientID);
-        console.log(obj.id);
-        if(obj.id==obj.clientID){
-            console.log(obj.id + 'Namaste');
+        if(!obj){
+            console.log('Received Socket post from android')
+        }
+        else{
+            console.log(clientID);
+            console.log(obj.id);
+            if(obj.id==obj.clientID){
+                console.log(obj.id + 'Namaste');
+            }    
         }
     })
 
