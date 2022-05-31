@@ -57,7 +57,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(screenrouter)
 app.use(require('../routes/user.router'))
-server.listen(4000,()=>{
+const port = 4000||process.env.PORT
+server.listen(port,()=>{
     console.log('Running...');
 })
 
