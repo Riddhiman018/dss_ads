@@ -14,7 +14,6 @@ const uri = "mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.mongo
 mongoose.connect("mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.mongodb.net/DS_MOLOG?retryWrites=true&w=majority")
 
 const app = express()
-const server = http.createServer(app)
 //add session
 //add Logger
 //add morgan
@@ -57,7 +56,9 @@ app.set('socketio',io)
 // app.use(passport.session())
 app.use(screenrouter)
 app.use(require('../routes/user.router'))
+
 const port = 4000||process.env.PORT
+const server = http.createServer(app)
 server.listen(port,()=>{
     console.log('Running...');
 })
