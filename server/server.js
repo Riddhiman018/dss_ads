@@ -33,6 +33,18 @@ app.use(express.static(`${__dirname}/staticfiles`))
 //     secret:'SECRETVALUE',
 //     store: MongoStore.create({mongoUrl:uri})
 // }))
+
+// app.set('socketio',io)
+// app.use(passport.initialize())
+// app.use(passport.session())
+app.use(screenrouter)
+app.use(require('../routes/user.router'))
+
+const port = 4000||process.env.PORT
+const server = http.createServer(app)
+server.listen(port,()=>{
+    console.log('Running...');
+})
 const io = new Server(server)
 io.on("connection",(socket)=>{
     socket.on("connectClient",(obj)=>{
@@ -50,16 +62,5 @@ io.on("connection",(socket)=>{
         }
     })
 
-})
-app.set('socketio',io)
-// app.use(passport.initialize())
-// app.use(passport.session())
-app.use(screenrouter)
-app.use(require('../routes/user.router'))
-
-const port = 4000||process.env.PORT
-const server = http.createServer(app)
-server.listen(port,()=>{
-    console.log('Running...');
 })
 
