@@ -8,6 +8,7 @@
 </head>
 <body>
     <button type="button" id="Connect_to_Android">Connect to Android</button>
+    <button type="button" id="ChangeVideo">Change Video</button>
     <script src="/socket.io/socket.io.js">
     </script>
     <script>
@@ -20,6 +21,10 @@
             socket.emit("connectClient",{
                 id:"123456"
             })
+        })
+        const btn2 = document.querySelector("#ChangeVideo")
+        btn2.addEventListener("click",()=>{
+            socket.emit("change video")
         })
     </script>
 </body>
