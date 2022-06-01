@@ -56,6 +56,9 @@ io.on("connection",(socket)=>{
             clientID:clientID
         });
     })
+    socket.on("changevideo",(obj)=>{
+        io.emit("changevideo")
+    })
     socket.on(`connect-to-db`,(obj)=>{
         console.log('Socket post from mobile');
         if(!obj){
