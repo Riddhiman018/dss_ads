@@ -24,7 +24,9 @@
         })
         const btn2 = document.querySelector("#ChangeVideo")
         btn2.addEventListener("click",()=>{
-            socket.emit("change video")
+            socket.emit("changevideo",{
+                id:"123456"
+            })
         })
     </script>
 </body>
