@@ -15,7 +15,11 @@ const userSchema = new mongoose.Schema({
     screens:{
         type:[String],
         default:[]
-    }    
+    },
+    videos:{
+        type:[String],
+        default:[]
+    }
 })
 
 module.exports = mongoose.model('user',userSchema)

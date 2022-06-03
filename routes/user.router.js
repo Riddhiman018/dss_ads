@@ -4,6 +4,36 @@ const passport = require('passport')
 const sample = require('../functions/sampleUser')
 const {ensureLogin,isregistered} = require('../middlewares/ensure_login')
 const socketio = require('socket.io')
+const multer = require('multer')
+const fs = require('fs')
+const user = require('../model/user.mongo')
+const path = require('path')
+
+
+
+const storage = multer.diskStorage({
+    destination:function(req,file,cb){
+        console.log(file);
+        if(!fs.existsSync('videofiles')){
+            fs.mkdirSync('videofiles')
+        }
+        cb(null,'videofiles')
+    },
+    filename:function(req,file,cb){
+        console.log(file);
+        cb(null,file.originalname);
+    }
+})
+
+const upload = multer({
+    storage:storage,
+    // fileFilter:function(req,file,cb){
+    //     var ext = path.extname(file.originalname)
+    //     if(ext!='.mkv'&& ext!='.mp4'){
+    //         return cb(new Error("Only videofiles"))
+    //     }
+    // }
+})
 
 router.get('/createSample',async (req,res)=>{
     try {
@@ -73,6 +103,51 @@ router.get('/connectdevice',async (req,res)=>{
     //         })
     //     }
     // })
+})
+
+router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
+    console.log(req.file)
+    user.updateOne({
+        username:"Chandan Singh"
+    },{
+        $addToSet:{
+            videos:[req.file.path]
+        } 
+    },function(err,result){
+        if(err){
+            res.status(404).send({
+                Message:'Error in Video Updating'
+            })
+        }
+        else{
+            res.status(200).send({
+                Message:'Uploaded the video'
+            })
+        }
+    })
+})
+
+router.post('/getVideos',async (req,res)=>{
+    try {
+        const user = await user.findOne({
+            username:"Chandan Singh"
+        })
+        if(user){
+            res.status(200).send({
+                Message:'User found',
+                videos:user.videos
+            })
+        }
+        else{
+            res.status(404).send({
+                Message:'User not found'
+            })
+        }
+    } catch (error) {
+        res.status(404).send({
+            Message:error.Message
+        })
+    }
 })
 
 module.exports = router
