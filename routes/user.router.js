@@ -8,8 +8,15 @@ const multer = require('multer')
 const fs = require('fs')
 const user = require('../model/user.mongo')
 const path = require('path')
+const aws = require('aws-sdk')
+const {uploadFile} = require('../controller/fileUpload')
 
 
+const s3 = new aws.S3({
+    accessKeyId:'AKIAVCSZ2D56JWCNDC5M',
+    secretAccessKey:'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',
+    region:'ap-south-1'
+})
 
 const storage = multer.diskStorage({
     destination:function(req,file,cb){
@@ -26,7 +33,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({
-    storage:storage,
+    storage:storage
     // fileFilter:function(req,file,cb){
     //     var ext = path.extname(file.originalname)
     //     if(ext!='.mkv'&& ext!='.mp4'){
@@ -107,24 +114,33 @@ router.get('/connectdevice',async (req,res)=>{
 
 router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
     console.log(req.file)
-    user.updateOne({
-        username:"Chandan Singh"
-    },{
-        $addToSet:{
-            videos:[req.file.path]
-        } 
-    },function(err,result){
-        if(err){
-            res.status(404).send({
-                Message:'Error in Video Updating'
-            })
-        }
-        else{
-            res.status(200).send({
-                Message:'Uploaded the video'
-            })
-        }
-    })
+    try {
+        const res = await uploadFile(req.file)
+        console.log(res);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({
+            Message:'Error in file upload'
+        })
+    }
+    // user.updateOne({
+    //     username:"Chandan Singh"
+    // },{
+    //     $addToSet:{
+    //         videos:[req.file.path]
+    //     } 
+    // },function(err,result){
+    //     if(err){
+    //         res.status(404).send({
+    //             Message:'Error in Video Updating'
+    //         })
+    //     }
+    //     else{
+    //         res.status(200).send({
+    //             Message:'Uploaded the video'
+    //         })
+    //     }
+    // })
 })
 
 router.post('/getVideos',async (req,res)=>{
