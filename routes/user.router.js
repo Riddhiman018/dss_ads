@@ -115,43 +115,46 @@ router.get('/connectdevice',async (req,res)=>{
 router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
     console.log(req.file)
     try {
-        const res = await uploadFile(req.file)
-        console.log(res);
+        const result = await uploadFile(req.file)
+        if(!result){
+            throw "Error"
+        }
+        else{
+                user.updateOne({
+        username:"Chandan Singh"
+    },{
+        $addToSet:{
+            videos:[result.Location]
+        } 
+    },function(err,result){
+        if(err){
+            throw err
+        }
+        else{
+            res.status(200).send({
+                Message:'Uploaded the video'
+            })
+        }
+    })
+        }
     } catch (error) {
         console.log(error);
         res.status(404).send({
             Message:'Error in file upload'
         })
     }
-    // user.updateOne({
-    //     username:"Chandan Singh"
-    // },{
-    //     $addToSet:{
-    //         videos:[req.file.path]
-    //     } 
-    // },function(err,result){
-    //     if(err){
-    //         res.status(404).send({
-    //             Message:'Error in Video Updating'
-    //         })
-    //     }
-    //     else{
-    //         res.status(200).send({
-    //             Message:'Uploaded the video'
-    //         })
-    //     }
-    // })
 })
 
-router.post('/getVideos',async (req,res)=>{
+router.get('/getVideos',async (req,res)=>{
     try {
-        const user = await user.findOne({
+        const us = await user.findOne({
             username:"Chandan Singh"
         })
-        if(user){
+        if(us){
+            console.log(us);
             res.status(200).send({
                 Message:'User found',
-                videos:user.videos
+                videos:us.videos
             })
         }
         else{
@@ -160,6 +163,7 @@ router.post('/getVideos',async (req,res)=>{
             })
         }
     } catch (error) {
+        console.log(error);
         res.status(404).send({
             Message:error.Message
         })
