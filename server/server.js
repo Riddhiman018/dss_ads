@@ -8,6 +8,9 @@ const {Server} = require('socket.io')
 //const MongoStore = require('connect-mongo')(session)
 const MongoStore = require('connect-mongo')
 const { default: mongoose } = require('mongoose')
+require('dotenv').config()
+const googleFunction = require('../config/googlepassport')
+
 
 //dbconnection
 const uri = "mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.mongodb.net/?retryWrites=true&w=majority"
@@ -28,6 +31,7 @@ app.use(express.static(`${__dirname}/staticfiles`))
 app.use(flash())
 const strategy = require('../config/passport')
 strategy(passport)
+googleFunction(passport)
 app.use(session({
     saveUninitialized:true,
     resave:true,

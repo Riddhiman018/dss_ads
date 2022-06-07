@@ -59,6 +59,18 @@ router.get('/createSample',async (req,res)=>{
 router.get('/login',(req,res)=>{
     res.render('login')
 })
+
+router.get('/auth/google',passport.authenticate('google',{
+    scope:['email']
+}))
+router.get('/auth/google/callback',passport.authenticate('google',{
+    failureRedirect:'/login',
+    successRedirect:'/success',
+    session:false
+}),(req,res,next)=>{
+    console.log('Google Called Back')
+})
+
 router.post('/register',isregistered,async (req,res)=>{
     try{
         await sample(req.body.username,req.body.password)
@@ -68,7 +80,7 @@ router.post('/register',isregistered,async (req,res)=>{
         })
     }    
 })
-router.post('/login',ensureLogin,(req,res,next)=>{
+router.post('/login',(req,res,next)=>{
     passport.authenticate("local",(err,user,info)=>{
         console.log(err);
         console.log(user);
@@ -78,12 +90,17 @@ router.post('/login',ensureLogin,(req,res,next)=>{
                 console.log(error);
             }
             else{
+                console.log(req.user);
                 res.status(200).send(req.user)
             }
         })
     })(req,res,next)
 })
 //temporary add device view
+router.get('/success',(req,res)=>{
+    res.send('Logged in')
+    console.log(req.user);
+})
 router.get('/connectdevice',async (req,res)=>{
     //get should contain device code
     //create socket connection with device
@@ -112,7 +129,7 @@ router.get('/connectdevice',async (req,res)=>{
     // })
 })
 
-router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
+router.post('/addVideos',ensureLogin,upload.single('postedvideos'),async (req,res)=>{
     console.log(req.file)
     try {
         const result = await uploadFile(req.file)
@@ -121,7 +138,7 @@ router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
         }
         else{
                 user.updateOne({
-        username:"Chandan Singh"
+        username:req.user.username
     },{
         $addToSet:{
             videos:[result.Location]
@@ -145,10 +162,10 @@ router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
     }
 })
 
-router.get('/getVideos',async (req,res)=>{
+router.get('/getVideos',ensureLogin,async (req,res)=>{
     try {
         const us = await user.findOne({
-            username:"Chandan Singh"
+            username:req.user.username
         })
         if(us){
             console.log(us);
