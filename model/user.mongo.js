@@ -10,12 +10,19 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
     }, 
     screens:{
         type:[String],
         default:[]
-    }    
+    },
+    videos:{
+        type:[String],
+        default:[]
+    },
+    playlists:{
+        type:[]
+    }
 })
 
 module.exports = mongoose.model('user',userSchema)

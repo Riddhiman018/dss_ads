@@ -8,7 +8,9 @@ const {Server} = require('socket.io')
 //const MongoStore = require('connect-mongo')(session)
 const MongoStore = require('connect-mongo')
 const { default: mongoose } = require('mongoose')
-const cors = require('cors')
+require('dotenv').config()
+const googleFunction = require('../config/googlepassport')
+
 
 //dbconnection
 const uri = "mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.mongodb.net/?retryWrites=true&w=majority"
@@ -25,28 +27,18 @@ const screenrouter = require('../routes/screens.router')
 app.use(express.urlencoded({
     extended:true
 }))
+app.use(express.json())
 app.use(express.static(`${__dirname}/staticfiles`))
-// app.use(flash())
-// const strategy = require('../config/passport')
-// strategy(passport)
-// app.use(session({
-//     saveUninitialized:true,
-//     resave:true,
-//     secret:'SECRETVALUE',
-//     store: MongoStore.create({mongoUrl:uri})
-// }))
-
-// app.set('socketio',io)
-// app.use(passport.initialize())
-// app.use(passport.session())
-app.use(screenrouter)
-app.use(require('../routes/user.router'))
-
-const port = process.env.PORT||4000
-const server = http.createServer(app)
-server.listen(port,()=>{
-    console.log('Running...');
-})
+app.use(flash())
+const strategy = require('../config/passport')
+strategy(passport)
+googleFunction(passport)
+app.use(session({
+    saveUninitialized:true,
+    resave:true,
+    secret:'SECRETVALUE',
+    store: MongoStore.create({mongoUrl:uri})
+}))
 const io = new Server(server)
 io.on("connection",(socket)=>{
     socket.on("connectClient",(obj)=>{
@@ -72,6 +64,5 @@ io.on("connection",(socket)=>{
             }    
         }
     })
-
 })
 

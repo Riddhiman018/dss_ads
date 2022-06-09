@@ -4,10 +4,47 @@ const passport = require('passport')
 const sample = require('../functions/sampleUser')
 const {ensureLogin,isregistered} = require('../middlewares/ensure_login')
 const socketio = require('socket.io')
+const multer = require('multer')
+const fs = require('fs')
+const user = require('../model/user.mongo')
+const path = require('path')
+const aws = require('aws-sdk')
+const {uploadFile} = require('../controller/fileUpload')
+
+
+const s3 = new aws.S3({
+    accessKeyId:'AKIAVCSZ2D56JWCNDC5M',
+    secretAccessKey:'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',
+    region:'ap-south-1'
+})
+
+const storage = multer.diskStorage({
+    destination:function(req,file,cb){
+        console.log(file);
+        if(!fs.existsSync('videofiles')){
+            fs.mkdirSync('videofiles')
+        }
+        cb(null,'videofiles')
+    },
+    filename:function(req,file,cb){
+        console.log(file);
+        cb(null,file.originalname);
+    }
+})
+
+const upload = multer({
+    storage:storage
+    // fileFilter:function(req,file,cb){
+    //     var ext = path.extname(file.originalname)
+    //     if(ext!='.mkv'&& ext!='.mp4'){
+    //         return cb(new Error("Only videofiles"))
+    //     }
+    // }
+})
 
 router.get('/createSample',async (req,res)=>{
     try {
-        await sample("Chandan Singh","Hello123")
+        await sample("chandansingh@gmail.com","Hello123")
         res.status(200).send({
             Message:"Testing"
         })
@@ -22,6 +59,17 @@ router.get('/createSample',async (req,res)=>{
 router.get('/login',(req,res)=>{
     res.render('login')
 })
+
+router.get('/auth/google',passport.authenticate('google',{
+    scope:['email']
+}))
+router.get('/auth/google/callback',passport.authenticate('google',{
+    failureRedirect:'/login',
+    successRedirect:'/success',
+    session:true
+}),(req,res,next)=>{
+})
+
 router.post('/register',isregistered,async (req,res)=>{
     try{
         await sample(req.body.username,req.body.password)
@@ -31,7 +79,7 @@ router.post('/register',isregistered,async (req,res)=>{
         })
     }    
 })
-router.post('/login',ensureLogin,(req,res,next)=>{
+router.post('/login',(req,res,next)=>{
     passport.authenticate("local",(err,user,info)=>{
         console.log(err);
         console.log(user);
@@ -41,12 +89,17 @@ router.post('/login',ensureLogin,(req,res,next)=>{
                 console.log(error);
             }
             else{
+                console.log(req.user);
                 res.status(200).send(req.user)
             }
         })
     })(req,res,next)
 })
 //temporary add device view
+router.get('/success',(req,res)=>{
+    res.send('Logged in')
+    console.log(req.user);
+})
 router.get('/connectdevice',async (req,res)=>{
     //get should contain device code
     //create socket connection with device
@@ -73,6 +126,92 @@ router.get('/connectdevice',async (req,res)=>{
     //         })
     //     }
     // })
+})
+//Add this middleware here: ,ensureLogin
+router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
+    console.log(req.file)
+    try {
+        const result = await uploadFile(req.file)
+        if(!result){
+            throw "Error"
+        }
+        else{
+                user.updateOne({
+        username:req.user.username
+    },{
+        $addToSet:{
+            videos:[result.Location]
+        } 
+    },function(err,result){
+        if(err){
+            throw err
+        }
+        else{
+            res.status(200).send({
+                Message:'Uploaded the video'
+            })
+        }
+    })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({
+            Message:'Error in file upload'
+        })
+    }
+})
+
+router.get('/getVideos',ensureLogin,async (req,res)=>{
+    try {
+        const us = await user.findOne({
+            username:req.user.username
+        })
+        if(us){
+            console.log(us);
+            res.status(200).send({
+                Message:'User found',
+                videos:us.videos
+            })
+        }
+        else{
+            res.status(404).send({
+                Message:'User not found'
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({
+            Message:error.Message
+        })
+    }
+})
+
+router.post('/makePlaylist',async (req,res)=>{
+    //As array should receive a list of videos
+    //req.body should contain array object
+    console.log(req.body.array);
+        user.updateOne({
+            username:"chandansingh@gmail.com"
+        },{
+            $addToSet:{
+                playlists:{
+                    $each:
+                        req.body.array
+                }
+            }
+        },function(error,result){
+            if(error){
+                console.log(error);
+                res.status(404).send({
+                    Message:'Error in playlist creation'
+                })
+            }
+            else{
+                res.status(200).send({
+                    Message:'Created Playlist'
+                })
+            }
+        })
 })
 
 module.exports = router
