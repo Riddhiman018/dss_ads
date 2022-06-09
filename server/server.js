@@ -10,7 +10,7 @@ const MongoStore = require('connect-mongo')
 const { default: mongoose } = require('mongoose')
 require('dotenv').config()
 const googleFunction = require('../config/googlepassport')
-
+const user = require('../model/user.mongo')
 
 //dbconnection
 const uri = "mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.mongodb.net/?retryWrites=true&w=majority"
@@ -49,7 +49,19 @@ io.on("connection",(socket)=>{
         });
     })
     socket.on("changevideo",(obj)=>{
-        io.emit("changevideo")
+        const username = obj.username
+        user.findOne({
+            username:username
+        },function(error,result){
+            if(error){
+                console.log(error);
+            }
+            else{
+                io.emit("changevideo",{
+                    array:result.playlists
+                })
+            }
+        })
     })
     socket.on(`connect-to-db`,(obj)=>{
         console.log('Socket post from mobile');
