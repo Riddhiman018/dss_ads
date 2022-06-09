@@ -40,6 +40,11 @@ app.use(session({
     secret:'SECRETVALUE',
     store: MongoStore.create({mongoUrl:uri})
 }))
+const server = http.createServer(app)
+const port = process.env.PORT||4000
+server.listen(port,()=>{
+    console.log('Listening......')
+})
 const io = new Server(server)
 io.on("connection",(socket)=>{
     socket.on("connectClient",(obj)=>{
