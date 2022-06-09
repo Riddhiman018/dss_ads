@@ -11,6 +11,7 @@ const { default: mongoose } = require('mongoose')
 require('dotenv').config()
 const googleFunction = require('../config/googlepassport')
 const user = require('../model/user.mongo')
+const cors = require('cors')
 
 //dbconnection
 const uri = "mongodb+srv://Riddhiman_Mongo:Hello123@mologtempcluster.z42bl.mongodb.net/?retryWrites=true&w=majority"
