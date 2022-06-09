@@ -27,6 +27,7 @@ const screenrouter = require('../routes/screens.router')
 app.use(express.urlencoded({
     extended:true
 }))
+app.use(express.json())
 app.use(express.static(`${__dirname}/staticfiles`))
 app.use(flash())
 const strategy = require('../config/passport')
@@ -54,7 +55,6 @@ io.on("connection",(socket)=>{
             console.log(obj.id + 'Namaste');
         }
     })
-
 })
 app.set('socketio',io)
 app.use(passport.initialize())

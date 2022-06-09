@@ -44,7 +44,7 @@ const upload = multer({
 
 router.get('/createSample',async (req,res)=>{
     try {
-        await sample("Chandan Singh","Hello123")
+        await sample("chandansingh@gmail.com","Hello123")
         res.status(200).send({
             Message:"Testing"
         })
@@ -66,9 +66,8 @@ router.get('/auth/google',passport.authenticate('google',{
 router.get('/auth/google/callback',passport.authenticate('google',{
     failureRedirect:'/login',
     successRedirect:'/success',
-    session:false
+    session:true
 }),(req,res,next)=>{
-    console.log('Google Called Back')
 })
 
 router.post('/register',isregistered,async (req,res)=>{
@@ -128,8 +127,8 @@ router.get('/connectdevice',async (req,res)=>{
     //     }
     // })
 })
-
-router.post('/addVideos',ensureLogin,upload.single('postedvideos'),async (req,res)=>{
+//Add this middleware here: ,ensureLogin
+router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
     console.log(req.file)
     try {
         const result = await uploadFile(req.file)
@@ -185,6 +184,34 @@ router.get('/getVideos',ensureLogin,async (req,res)=>{
             Message:error.Message
         })
     }
+})
+
+router.post('/makePlaylist',async (req,res)=>{
+    //As array should receive a list of videos
+    //req.body should contain array object
+    console.log(req.body.array);
+        user.updateOne({
+            username:"chandansingh@gmail.com"
+        },{
+            $addToSet:{
+                playlists:{
+                    $each:
+                        req.body.array
+                }
+            }
+        },function(error,result){
+            if(error){
+                console.log(error);
+                res.status(404).send({
+                    Message:'Error in playlist creation'
+                })
+            }
+            else{
+                res.status(200).send({
+                    Message:'Created Playlist'
+                })
+            }
+        })
 })
 
 module.exports = router

@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
     }, 
     screens:{
         type:[String],
@@ -19,6 +19,9 @@ const userSchema = new mongoose.Schema({
     videos:{
         type:[String],
         default:[]
+    },
+    playlists:{
+        type:[]
     }
 })
 
