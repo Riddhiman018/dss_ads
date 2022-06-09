@@ -63,6 +63,7 @@ io.on("connection",(socket)=>{
                 console.log(error);
             }
             else{
+                console.log(result.playlists);
                 io.emit("changevideo",{
                     array:result.playlists
                 })
