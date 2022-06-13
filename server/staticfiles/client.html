@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    <input type="text" class="mobile_code">
     <button type="button" id="Connect_to_Android">Connect to Android</button>
     <button type="button" id="ChangeVideo">Change Video</button>
     <script src="/socket.io/socket.io.js">
@@ -19,14 +20,14 @@
         const btn = document.querySelector('#Connect_to_Android')
         btn.addEventListener('click',()=>{
             socket.emit("connectClient",{
-                id:"123456"
+                id:document.querySelector('.mobile_code').value
             })
         })
         const btn2 = document.querySelector("#ChangeVideo")
         btn2.addEventListener("click",()=>{
             socket.emit("changevideo",{
                 username:"chandansingh@gmail.com",
-                id:"123456"
+                id:document.querySelector('.mobile_code').value
             })
         })
     </script>
