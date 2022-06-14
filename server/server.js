@@ -44,7 +44,7 @@ app.use(screenrouter)
 app.use(require('../routes/user.router'))
 const server = http.createServer(app)
 const port = process.env.PORT||4000
-server.listen(port,()=>{
+server.listen(port,()=>{d
     console.log('Listening......')
 })
 const io = new Server(server)
@@ -55,35 +55,37 @@ io.on("connection",(socket)=>{
         io.emit(`${clientID}`,{
             clientID:clientID
         });
-    })
-    socket.on("changevideo",(obj)=>{
-        const username = obj.username
-        user.findOne({
-            username:username
-        },function(error,result){
-            if(error){
-                console.log(error);
+        socket.join(`${clientID}`)
+        socket.on(`connect-to-server`,(obj)=>{
+            console.log('Socket post from mobile');
+            if(!obj){
+                console.log('Received Socket post from android')
             }
             else{
-                console.log(result.playlists);
-                io.emit("changevideo",{
-                    array:result.playlists
-                })
+                const objkt = JSON.parse(obj) //obj is a JSON
+                const clientID = objkt.clientID   // clientID in a string
+                socket.join(clientID) //joining done
+                io.to(clientID).emit(`${clientID}-room-joined`) //No object being sent, simply an event to switch to display mode     
             }
         })
-    })
-    socket.on(`connect-to-db`,(obj)=>{
-        console.log('Socket post from mobile');
-        if(!obj){
-            console.log('Received Socket post from android')
-        }
-        else{
-            console.log(clientID);
-            console.log(obj.id);
-            if(obj.id==obj.clientID){
-                console.log(obj.id + 'Namaste');
-            }    
-        }
+        socket.on("changevideo",(obj)=>{
+            const objt = JSON.parse(obj)
+            const username = obj.username
+            const clientID = objt.clientID //client id in a string
+            user.findOne({
+                username:username
+            },function(error,result){
+                if(error){
+                    console.log(error);
+                }
+                else{
+                    console.log(result.playlists);
+                    io.to(clientID).emit("changevideo",{
+                        array:result.playlists
+                    })
+                }
+            })
+        })
     })
 })
 
