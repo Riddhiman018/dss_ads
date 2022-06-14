@@ -56,7 +56,7 @@ io.on("connection",(socket)=>{
             clientID:clientID
         });
         socket.join(`${clientID}`)
-        socket.on(`connect-to-server`,(obj)=>{
+        socket.on(`connect-to-server`,(obj)=>{  //socket event to be emitted from android with json obj containing the code as clientID
             console.log('Socket post from mobile');
             if(!obj){
                 console.log('Received Socket post from android')
@@ -68,9 +68,8 @@ io.on("connection",(socket)=>{
                 io.to(clientID).emit(`${clientID}-room-joined`) //No object being sent, simply an event to switch to display mode     
             }
         })
-        socket.on("changevideo",(obj)=>{
-            const objt = JSON.parse(obj)
-            const username = obj.username
+        socket.on("changevideo",(objt)=>{
+            const username = objt.username
             const clientID = objt.clientID //client id in a string
             user.findOne({
                 username:username
