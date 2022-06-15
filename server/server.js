@@ -50,6 +50,7 @@ server.listen(port,()=>{
 const io = new Server(server)
 io.on("connection",(socket)=>{
     socket.on("connectClient",(obj)=>{
+        console.log(obj)
         const clientID = obj.id
         console.log(obj.id);
         io.emit(`${clientID}`,{
@@ -57,6 +58,7 @@ io.on("connection",(socket)=>{
         });
         socket.join(`${clientID}`)
         socket.on(`connect-to-server`,(obj)=>{  //socket event to be emitted from android with json obj containing the code as clientID
+            console.log(obj)
             console.log('Socket post from mobile');
             if(!obj){
                 console.log('Received Socket post from android')
@@ -69,6 +71,7 @@ io.on("connection",(socket)=>{
             }
         })
         socket.on("changevideo",(objt)=>{
+            console.log(objt)
             const username = objt.username
             const clientID = objt.clientID //client id in a string
             user.findOne({
