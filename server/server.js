@@ -65,7 +65,7 @@ io.on("connection",(socket)=>{
             console.log('Received Socket post from android')
         }
         else{
-            const objkt = JSON.parse(obj) //obj is a JSON
+            const objkt = obj //obj is a JSON
             const clientID = objkt.clientID   // clientID in a string
             socket.join(clientID) //joining done
             io.to(clientID).emit(`${clientID}-room-joined`) //No object being sent, simply an event to switch to display mode     
