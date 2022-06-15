@@ -57,37 +57,37 @@ io.on("connection",(socket)=>{
             clientID:clientID
         });
         socket.join(`${clientID}`)
-        socket.on(`connect-to-server`,(obj)=>{  //socket event to be emitted from android with json obj containing the code as clientID
-            console.log('Socket post from mobile');
-            console.log(obj)
-            if(!obj){
-                console.log('Received Socket post from android')
+    })
+    socket.on(`connect-to-server`,(obj)=>{  //socket event to be emitted from android with json obj containing the code as clientID
+        console.log('Socket post from mobile');
+        console.log(obj)
+        if(!obj){
+            console.log('Received Socket post from android')
+        }
+        else{
+            const objkt = JSON.parse(obj) //obj is a JSON
+            const clientID = objkt.clientID   // clientID in a string
+            socket.join(clientID) //joining done
+            io.to(clientID).emit(`${clientID}-room-joined`) //No object being sent, simply an event to switch to display mode     
+        }
+    })
+    socket.on("changevideo",(objt)=>{
+        console.log(objt)
+        const username = objt.username
+        const clientID = objt.id //client id in a string
+        console.log(clientID);
+        user.findOne({
+            username:username
+        },function(error,result){
+            if(error){
+                console.log(error);
             }
             else{
-                const objkt = JSON.parse(obj) //obj is a JSON
-                const clientID = objkt.clientID   // clientID in a string
-                socket.join(clientID) //joining done
-                io.to(clientID).emit(`${clientID}-room-joined`) //No object being sent, simply an event to switch to display mode     
+                console.log(result.playlists);
+                io.to(clientID).emit("changevideo",{
+                    array:result.playlists
+                })
             }
-        })
-        socket.on("changevideo",(objt)=>{
-            console.log(objt)
-            const username = objt.username
-            const clientID = objt.id //client id in a string
-            console.log(clientID);
-            user.findOne({
-                username:username
-            },function(error,result){
-                if(error){
-                    console.log(error);
-                }
-                else{
-                    console.log(result.playlists);
-                    io.to(clientID).emit("changevideo",{
-                        array:result.playlists
-                    })
-                }
-            })
         })
     })
 })
