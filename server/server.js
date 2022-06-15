@@ -58,8 +58,8 @@ io.on("connection",(socket)=>{
         });
         socket.join(`${clientID}`)
         socket.on(`connect-to-server`,(obj)=>{  //socket event to be emitted from android with json obj containing the code as clientID
-            console.log(obj)
             console.log('Socket post from mobile');
+            console.log(obj)
             if(!obj){
                 console.log('Received Socket post from android')
             }
