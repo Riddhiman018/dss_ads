@@ -44,7 +44,7 @@ app.use(screenrouter)
 app.use(require('../routes/user.router'))
 const server = http.createServer(app)
 const port = process.env.PORT||4000
-server.listen(port,()=>{d
+server.listen(port,()=>{
     console.log('Listening......')
 })
 const io = new Server(server)
