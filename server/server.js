@@ -73,7 +73,7 @@ io.on("connection",(socket)=>{
         socket.on("changevideo",(objt)=>{
             console.log(objt)
             const username = objt.username
-            const clientID = objt.clientID //client id in a string
+            const clientID = objt.id //client id in a string
             user.findOne({
                 username:username
             },function(error,result){
