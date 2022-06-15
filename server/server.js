@@ -74,6 +74,7 @@ io.on("connection",(socket)=>{
             console.log(objt)
             const username = objt.username
             const clientID = objt.id //client id in a string
+            console.log(clientID);
             user.findOne({
                 username:username
             },function(error,result){
