@@ -10,18 +10,21 @@ function ensureLogin(req,res,next){
     }
 }
 async function isregistered(req,res,next){
+    console.log('Entered Middleware')
     const username = req.body.username
+    console.log(username)
     try{
-        const us = await user.find({
+        const us = await user.findOne({
             username:username
         })
-        if(!us){
-            next()
-        }
-        else{
+        console.log(us)
+        if(us){
             res.status(200).send({
                 Message:'User exists already'
             })
+        }
+        else{
+            next()
         }
     }catch(error){
         res.status(404).send({

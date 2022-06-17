@@ -32,14 +32,16 @@ app.use(express.json())
 app.use(express.static(`${__dirname}/staticfiles`))
 app.use(flash())
 const strategy = require('../config/passport')
-strategy(passport)
-googleFunction(passport)
 app.use(session({
     saveUninitialized:true,
     resave:true,
     secret:'SECRETVALUE',
     store: MongoStore.create({mongoUrl:uri})
 }))
+app.use(passport.initialize())
+app.use(passport.session())
+strategy(passport)
+googleFunction(passport)
 app.use(screenrouter)
 app.use(require('../routes/user.router'))
 const server = http.createServer(app)

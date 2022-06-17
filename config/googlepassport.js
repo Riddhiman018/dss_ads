@@ -35,7 +35,7 @@ module.exports = function(passport){
         user.findOne({
             userid:id
         },(err,user)=>{
-            cb(err,user)
+            cb(null,user)
             console.log(user);
         })
     })

@@ -72,7 +72,7 @@ router.get('/auth/google/callback',passport.authenticate('google',{
 
 router.post('/register',isregistered,async (req,res)=>{
     try{
-        await sample(req.body.username,req.body.password)
+        await sample(req.body.username,req.body.password,res)
     }catch(error){
         res.status(404).send({
             Message:error.Message
@@ -87,6 +87,9 @@ router.post('/login',(req,res,next)=>{
         req.logIn(user,(error)=>{
             if(error){
                 console.log(error);
+                res.status(404).send({
+                    Message:'Error in user login'
+                })
             }
             else{
                 console.log(req.user);
@@ -95,10 +98,21 @@ router.post('/login',(req,res,next)=>{
         })
     })(req,res,next)
 })
+router.get('/logout',async (req,res)=>{
+    req.logOut(function(err){
+        if(err){
+            res.status(404).send({
+                Message:'Error logging out'
+            })
+        }
+        res.redirect('/login')
+    })
+})
 //temporary add device view
 router.get('/success',(req,res)=>{
-    res.send('Logged in')
-    console.log(req.user);
+    console.log('Sending req user')
+    console.log(req.user)
+    res.status(200).send(req.user)
 })
 router.get('/connectdevice',async (req,res)=>{
     //get should contain device code
