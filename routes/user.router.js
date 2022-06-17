@@ -205,7 +205,7 @@ router.post('/makePlaylist',async (req,res)=>{
     //req.body should contain array object
     console.log(req.body.array);
         user.updateOne({
-            username:"chandansingh@gmail.com"
+            username:req.user.username
         },{
             $addToSet:{
                 playlists:{
