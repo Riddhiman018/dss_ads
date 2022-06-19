@@ -10,6 +10,7 @@ const MongoStore = require('connect-mongo')
 const { default: mongoose } = require('mongoose')
 require('dotenv').config()
 const googleFunction = require('../config/googlepassport')
+const googleSignUp = require('../config/googlePassportSignUp')
 const user = require('../model/user.mongo')
 const cors = require('cors')
 

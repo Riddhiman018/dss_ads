@@ -92,6 +92,7 @@ router.post('/login',(req,res,next)=>{
                 })
             }
             else{
+                console.log('In Route')
                 console.log(req.user);
                 res.status(200).send(req.user)
             }

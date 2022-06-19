@@ -4,10 +4,12 @@ const user = require('../model/user.mongo')
 
 module.exports = function(passport){
     passport.use(new lstrategy((username,password,done)=>{
+        console.log(`Passport: ${username}`)
         user.findOne({
             username:username
         },function (err,user){
             if(err){
+                console.log('Error Statement')
                 console.log(error);
             };
             if(!user){
