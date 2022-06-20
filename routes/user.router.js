@@ -64,8 +64,8 @@ router.get('/auth/google',passport.authenticate('google',{
     scope:['email']
 }))
 router.get('/auth/google/callback',passport.authenticate('google',{
-    failureRedirect:'/login',
-    successRedirect:'/success',
+    failureRedirect:'http://localhost:3000/login',
+    successRedirect:'http://localhost:3000/dashboard',
     session:true
 }),(req,res,next)=>{
 })
@@ -163,13 +163,23 @@ router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
         $addToSet:{
             videos:[result.Location]
         } 
-    },function(err,result){
+    },function(err,result2){
         if(err){
             throw err
         }
         else{
-            res.status(200).send({
-                Message:'Uploaded the video'
+            // res.status(200).send({
+            //     Message:'Uploaded the video'
+            // })
+            fs.unlink(req.file.path,(err)=>{
+                if(err){
+                    throw err
+                }
+                else{
+                    res.status(200).send({
+                        Message:'Successfully uploaded the file'
+                    })
+                }
             })
         }
     })
