@@ -100,7 +100,7 @@ router.post('/login',(req,res,next)=>{
     })(req,res,next)
 })
 router.post('/location_details',async (req,res)=>{
-    console.log(req.params)
+    console.log(req.query)
     res.status(200).send({
         Message:'Location received'
     })
