@@ -99,7 +99,7 @@ router.post('/login',(req,res,next)=>{
         })
     })(req,res,next)
 })
-router.post('/location_details',async (req,res)=>{
+router.get('/location_details',async (req,res)=>{
     console.log(req.query)
     res.status(200).send({
         Message:'Location received'
@@ -153,12 +153,13 @@ router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
     console.log(req.file)
     try {
         const result = await uploadFile(req.file)
+        console.log(result)
         if(!result){
             throw "Error"
         }
         else{
                 user.updateOne({
-        username:req.user.username
+        username:"chandansingh@gmail.com"
     },{
         $addToSet:{
             videos:[result.Location]
