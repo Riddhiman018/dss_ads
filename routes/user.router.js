@@ -162,7 +162,7 @@ router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
         username:"chandansingh@gmail.com"
     },{
         $addToSet:{
-            videos:[result.Location]
+            playlists:[result.Location]
         } 
     },function(err,result2){
         if(err){
