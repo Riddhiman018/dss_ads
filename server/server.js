@@ -57,6 +57,7 @@ const io = new Server(server,{
 }})
 io.on("connection",(socket)=>{
     socket.on("connectClient",(obj)=>{
+        console.log(socket.id)
         console.log(obj)
         const clientID = obj.id
         console.log(obj.id);
@@ -79,6 +80,7 @@ io.on("connection",(socket)=>{
         }
     })
     socket.on("changevideo",(objt)=>{
+        console.log(socket.id)
         console.log(objt)
         const username = objt.username
         const clientID = objt.id //client id in a string
