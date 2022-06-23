@@ -50,7 +50,11 @@ const port = process.env.PORT||4000
 server.listen(port,()=>{
     console.log('Listening......')
 })
-const io = new Server(server)
+const io = new Server(server,{
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+}})
 io.on("connection",(socket)=>{
     socket.on("connectClient",(obj)=>{
         console.log(obj)
