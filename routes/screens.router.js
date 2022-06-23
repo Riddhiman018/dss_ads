@@ -27,7 +27,7 @@ router.post('/addScreen',async (req,res)=>{
 })
 router.get('/generateNumber',async (req,res)=>{
     const code = Date.now().toString()
-    const number = code.slice(code.length-10)
+    const number = code.slice(code.length-10).slice(-6)
     common.findOne({
         USED_DEVICE_CODE:number
     },async function(error,result){
