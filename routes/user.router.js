@@ -94,6 +94,7 @@ router.post('/login',(req,res,next)=>{
             else{
                 console.log('In Route')
                 console.log(req.user);
+                req.user.password = ""
                 res.status(200).send(req.user)
             }
         })
@@ -162,7 +163,7 @@ router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
         username:"chandansingh@gmail.com"
     },{
         $addToSet:{
-            playlists:[result.Location]
+            playlists:result.Location
         } 
     },function(err,result2){
         if(err){
