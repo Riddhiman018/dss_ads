@@ -10,6 +10,7 @@ const user = require('../model/user.mongo')
 const path = require('path')
 const aws = require('aws-sdk')
 const {uploadFile} = require('../controller/fileUpload')
+const path = require('path')
 
 
 const s3 = new aws.S3({
