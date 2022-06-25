@@ -92,6 +92,7 @@ io.on("connection",(socket)=>{
                 console.log(error);
             }
             else{
+                console.log(result)
                 console.log(result.playlists);
                 io.to(clientID).emit("changevideo",{
                     array:result.playlists
