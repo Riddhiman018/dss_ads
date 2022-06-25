@@ -33,13 +33,13 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({
-    storage:storage
-    // fileFilter:function(req,file,cb){
-    //     var ext = path.extname(file.originalname)
-    //     if(ext!='.mkv'&& ext!='.mp4'){
-    //         return cb(new Error("Only videofiles"))
-    //     }
-    // }
+    storage:storage,
+    fileFilter:function(req,file,cb){
+        var ext = path.extname(file.originalname)
+        if(ext!='.mkv'&& ext!='.mp4'){
+            return cb(new Error("Only videofiles"))
+        }
+    }
 })
 
 router.get('/createSample',async (req,res)=>{
