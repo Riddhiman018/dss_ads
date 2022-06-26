@@ -111,6 +111,7 @@ io.on("connection",(socket)=>{
                 console.log(result)
                 console.log(result.playlists);
                 result.screens.forEach(element => {
+                    console.log(element)
                     io.to(element).emit("changevideo",{
                         array:result.playlists
                     }) 
