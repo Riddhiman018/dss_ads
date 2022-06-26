@@ -65,6 +65,22 @@ io.on("connection",(socket)=>{
             clientID:clientID
         });
         socket.join(`${clientID}`)
+        user.updateOne({
+            username:obj.username
+        },{
+            $push:{
+                screens:{
+                    clientID
+                }
+            }
+        },function(error,result){
+            if(error){
+                io.to(clientID).emit('screen-not-added')
+            }
+            else{
+                io.to(clientID).emit('screen-not-added')
+            }
+        })
     })
     socket.on(`connect-to-server`,(obj)=>{  //socket event to be emitted from android with json obj containing the code as clientID
         console.log('Socket post from mobile');
@@ -94,9 +110,11 @@ io.on("connection",(socket)=>{
             else{
                 console.log(result)
                 console.log(result.playlists);
-                io.to(clientID).emit("changevideo",{
-                    array:result.playlists
-                })
+                result.screens.forEach(element => {
+                    io.to(element).emit("changevideo",{
+                        array:result.playlists
+                    }) 
+                });
             }
         })
     })
