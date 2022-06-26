@@ -69,9 +69,7 @@ io.on("connection",(socket)=>{
             username:obj.username
         },{
             $addToSet:{
-                screens:{
-                    clientID
-                }
+                screens:clientID
             }
         },function(error,result){
             if(error){
