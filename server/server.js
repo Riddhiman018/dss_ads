@@ -68,7 +68,7 @@ io.on("connection",(socket)=>{
         user.updateOne({
             username:obj.username
         },{
-            $push:{
+            $addToSet:{
                 screens:{
                     clientID
                 }
