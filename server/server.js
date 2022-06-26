@@ -75,9 +75,11 @@ io.on("connection",(socket)=>{
             }
         },function(error,result){
             if(error){
+                console.log(error)
                 io.to(clientID).emit('screen-not-added')
             }
             else{
+                console.log('screen added')
                 io.to(clientID).emit('screen-added')
             }
         })
