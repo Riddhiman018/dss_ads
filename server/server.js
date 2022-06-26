@@ -78,7 +78,7 @@ io.on("connection",(socket)=>{
                 io.to(clientID).emit('screen-not-added')
             }
             else{
-                io.to(clientID).emit('screen-not-added')
+                io.to(clientID).emit('screen-added')
             }
         })
     })
