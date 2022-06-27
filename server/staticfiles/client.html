@@ -20,6 +20,7 @@
         const btn = document.querySelector('#Connect_to_Android')
         btn.addEventListener('click',()=>{
             socket.emit("connectClient",{
+                username:'chandansingh@gmail.com',
                 id:document.querySelector('.mobile_code').value
             })
         })
