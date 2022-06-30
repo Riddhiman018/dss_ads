@@ -110,6 +110,7 @@ io.on("connection",(socket)=>{
             else{
                 console.log(result)
                 console.log(result.playlists);
+                result.playlists.reverse()
                 result.screens.forEach(element => {
                     console.log(element)
                     io.to(element).emit("changevideo",{
