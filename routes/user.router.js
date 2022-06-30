@@ -162,7 +162,7 @@ router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
         }
         else{
                 user.updateOne({
-        username:"chandansingh@gmail.com"
+        username:req.body.username
     },{
         $addToSet:{
             playlists:result.Location
@@ -177,6 +177,7 @@ router.post('/addVideos',upload.single('postedvideos'),async (req,res)=>{
             // })
             fs.unlink(req.file.path,(err)=>{
                 if(err){
+                    console.log(err)
                     throw err
                 }
                 else{
