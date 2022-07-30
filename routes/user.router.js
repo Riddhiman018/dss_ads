@@ -190,13 +190,14 @@ router.post("/addVideos", upload.single("postedvideos"), async (req, res) => {
     if (!result) {
       throw "Error";
     } else {
+      console.log(req.body.username);
       user.updateOne(
         {
-          username: req.user.username,
+          username: req.body.username
         },
         {
           $addToSet: {
-            playlists: result.Location
+            videos: result.Key+":"+ result.Location
             // +"-"+title
           },
         },
@@ -211,6 +212,7 @@ router.post("/addVideos", upload.single("postedvideos"), async (req, res) => {
               if (err) {
                 throw err;
               } else {
+                
                 res.status(200).send({
                   Message: "Successfully uploaded the file",
                 });
@@ -235,7 +237,7 @@ router.get("/removescreen", function (req, res) {
     console.log("in the function");
     user.updateOne(
       {
-        username: "chandansingh@gmail.com",
+        username: req.body.username,
       },
       {
         $pullAll: { screens: [screenname] },
@@ -365,7 +367,7 @@ router.get("/removeplaylist", function (req, res) {
     console.log(link);
     console.log("in the function");
     user.updateOne(
-      { username: req.user.username },
+      { username: req.body.username},
       { $pullAll: { playlists: [link] } },
       function (err, result) {
         if (err) {
