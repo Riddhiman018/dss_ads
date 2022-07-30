@@ -46,20 +46,29 @@ googleFunction(passport)
 app.use(screenrouter)
 app.use(require('../routes/user.router'))
 const server = http.createServer(app)
+
+
 const port = process.env.PORT||4000
 server.listen(port,()=>{
-    console.log('Listening......')
+    
+    console.log('Listening...')
 })
+
 const io = new Server(server,{
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
 }})
+
+
+
 io.on("connection",(socket)=>{
     socket.on("connectClient",(obj)=>{
         console.log(socket.id)
         console.log(obj)
         const clientID = obj.id
+        const screenname=obj.screenname
+        console.log(screenname);
         console.log(obj.id);
         io.emit(`${clientID}`,{
             clientID:clientID
@@ -69,7 +78,7 @@ io.on("connection",(socket)=>{
             username:obj.username
         },{
             $addToSet:{
-                screens:clientID
+                screens:clientID+"-"+screenname
             }
         },function(error,result){
             if(error){
@@ -78,7 +87,7 @@ io.on("connection",(socket)=>{
             }
             else{
                 console.log('screen added')
-                io.to(clientID).emit('screen-added')
+                io.to(clientID).emit("screen added")
             }
         })
     })
@@ -110,7 +119,6 @@ io.on("connection",(socket)=>{
             else{
                 console.log(result)
                 console.log(result.playlists);
-                result.playlists.reverse()
                 result.screens.forEach(element => {
                     console.log(element)
                     io.to(element).emit("changevideo",{

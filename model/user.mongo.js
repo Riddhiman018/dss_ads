@@ -10,11 +10,13 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true,
+        required:false,
     }, 
     screens:{
-        type:[]
+        type:[String]
+        
     },
+
     videos:{
         type:[String],
         default:[]
