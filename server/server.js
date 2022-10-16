@@ -122,7 +122,7 @@ io.on("connection",(socket)=>{
                 result.screens.forEach(element => {
                     console.log(element)
                     const ele = element.split("-")[0]
-                    io.to(ele).emit("changevideo",{
+                    socket.emit(ele,{
                         array:result.playlists
                     }) 
                 });
