@@ -1,7 +1,7 @@
 const S3 = require('aws-sdk/clients/s3')
 const fs = require('fs')
 
-const s3 = new aws.S3({
+const s3 = new S3({
     accessKeyId: "AKIAVAR7LPOHXP7CV5AZ",
     secretAccessKey: "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",
     region: "ap-south-1",
