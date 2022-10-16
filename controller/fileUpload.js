@@ -9,7 +9,7 @@ const s3 = new aws.S3({
 const uploadFile = (file)=>{
     const fileStream = fs.createReadStream(file.path)
     const BucketParams = {
-        Bucket:'mologds',
+        Bucket:'mologmedia',
         Body:fileStream,
         Key:file.filename
     }
