@@ -13,8 +13,8 @@ const { uploadFile } = require("../controller/fileUpload");
 const { Route53RecoveryCluster } = require("aws-sdk");
 
 const s3 = new aws.S3({
-  accessKeyId: "AKIAVCSZ2D56JWCNDC5M",
-  secretAccessKey: "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",
+  accessKeyId: "AKIAVAR7LPOHXP7CV5AZ",
+  secretAccessKey: "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",
   region: "ap-south-1",
 });
 
