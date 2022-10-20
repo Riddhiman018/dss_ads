@@ -197,7 +197,7 @@ router.post("/addVideos", upload.single("postedvideos"), async (req, res) => {
         },
         {
           $addToSet: {
-            videos: result.Key+":"+ result.Location
+            videos: result.Location
             // +"-"+title
           },
         },
