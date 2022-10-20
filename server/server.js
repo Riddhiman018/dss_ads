@@ -123,7 +123,7 @@ io.on("connection",(socket)=>{
                     console.log(element)
                     const ele = element.split("-")[0]
                     io.emit('changevideo',{
-                        array:result.playlists
+                        array:result.videos
                     }) 
                 });
             }
