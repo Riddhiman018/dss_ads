@@ -10,6 +10,14 @@ const video  = new mongoose.Schema({
         type:String
     }
 })
+const playlist_Deets = new mongoose.Schema({
+    Device_id:{
+        type:String
+    },
+    video_array:{
+        type:[String]
+    }
+})
 const userSchema = new mongoose.Schema({
     userid:{
         type:Number,
@@ -32,7 +40,7 @@ const userSchema = new mongoose.Schema({
         default:[]
     },
     playlists:{
-        type:[]
+        type:playlist_Deets
     },
     video_list:{
         type:[video]
