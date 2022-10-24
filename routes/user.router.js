@@ -388,7 +388,7 @@ router.get("/removeplaylist", function (req, res) {
 });
 
 router.get('/playlist_view',async (req,res)=>{
-  res.render('makePlaylist')
+  res.render("makePlaylist")
 })
 
 module.exports = router;
