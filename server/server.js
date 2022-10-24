@@ -104,31 +104,27 @@ io.on("connection",(socket)=>{
             io.to(clientID).emit(`${clientID}-room-joined`) //No object being sent, simply an event to switch to display mode     
         }
     })
-    socket.on("changevideo",(objt)=>{
+    socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
         console.log(objt)
         const username = objt.username
         const clientID = objt.id //client id in a string
         console.log(clientID);
-        user.findOne({
-            username:username
-        },function(error,result){
-            if(error){
-                console.log(error);
-            }
-            else{
-                console.log(result)
-                console.log(result.playlists);
-                result.playlists.forEach(element => {
-                    console.log(element)
-                    if(ele.Device_id==clientID){
-                        io.to(clientID).emit('changevideo',{                            
-                            array:result.playlists.video_array
-                        })
-                    }
-                });
-            }
-        })
+        const result = await user.findOne({
+                username:username
+        }).lean()
+        if(result){
+            console.log(result)
+            console.log(result.playlists);
+            result.playlists.forEach(element => {
+                console.log(element)
+                if(ele.Device_id==clientID){
+                    io.to(clientID).emit('changevideo',{                            
+                        array:result.playlists.video_array
+                    })
+                }
+            });
+        }
     })
 })
 
