@@ -118,7 +118,7 @@ io.on("connection",(socket)=>{
             console.log(result.playlists);
             result.playlists.forEach(element => {
                 console.log(element)
-                if(ele.Device_id==clientID){
+                if(element.Device_id==clientID){
                     io.to(clientID).emit('changevideo',{                            
                         array:result.playlists.video_array
                     })
