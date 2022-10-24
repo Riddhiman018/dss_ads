@@ -61,6 +61,10 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
+router.get('/playlist_view',async (req,res)=>{
+  res.render("makePlaylist");
+});
+
 router.get(
   "/auth/google",
   passport.authenticate("google", {
@@ -387,8 +391,5 @@ router.get("/removeplaylist", function (req, res) {
   }
 });
 
-router.get('/playlist_view',async (req,res)=>{
-  res.render("makePlaylist")
-})
 
 module.exports = router;
