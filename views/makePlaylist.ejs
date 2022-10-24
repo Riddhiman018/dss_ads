@@ -10,7 +10,7 @@
     <h1>Hi</h1>
     <script>
         window.addEventListener('load',async ()=>{
-            const res = await fetch("https://mologmedia.herokuapp.com/getVideos");
+            const res = await fetch("https://mologmedia.herokuapp.com/getVideos?username=chandansingh@gmail.com");
         if(res){
             const data = await res.json()
             if(data){

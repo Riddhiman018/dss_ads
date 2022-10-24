@@ -264,10 +264,10 @@ router.get("/removescreen", function (req, res) {
   }
 });
 
-router.get("/getVideos", ensureLogin, async (req, res) => {
+router.get("/getVideos", async (req, res) => {
   try {
     const us = await user.findOne({
-      username: req.user.username,
+      username: req.query.username,
     });
     if (us) {
       console.log(us);
