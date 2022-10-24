@@ -120,7 +120,7 @@ io.on("connection",(socket)=>{
                 console.log(element)
                 if(element.Device_id==clientID){
                     io.to(clientID).emit('changevideo',{                            
-                        array:result.playlists.video_array
+                        array:element.video_array
                     })
                 }
             });
