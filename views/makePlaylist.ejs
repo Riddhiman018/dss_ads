@@ -33,6 +33,7 @@
             const data = await res.json()
             if(data){
                 const listcontainer = document.querySelector('.listcontainer')
+                console.log(data)
                 data.forEach(element => {
                     const html = `<div class = "list"><h2><a>${element}</a></h2></div>`
                     listcontainer.insertAdjacentElement('afterbegin',html)
