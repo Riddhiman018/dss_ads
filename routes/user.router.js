@@ -62,7 +62,7 @@ router.get("/login", (req, res) => {
 });
 
 router.get('/playlist_view',async (req,res)=>{
-  res.render("makePlaylist");
+  res.render("makePlaylist",{username:req.query.username});
 });
 
 router.get(
@@ -391,5 +391,45 @@ router.get("/removeplaylist", function (req, res) {
   }
 });
 
+router.post('/generatePlaylist',async(req,res)=>{
+  //req.query.username reqd..
+  try{
+    console.log(req.body)
+    const usr = await user.findOne({
+      username:req.body.usrname
+    })
+    if(usr){
+      var video_array = []
+      var indexnos = req.body.indexnos.split(",")
+      for(var i=0;i<indexnos;i++){
+        video_array.push(usr.videos[indexnos[i]])
+      }
+      user.updateOne({
+        username:req.body.usrname
+      },{
+        $push:{
+          playlists:{
+            Device_id:req.body.deviceID,
+            video_array:video_array
+          }
+        }
+      },function(err,result){
+        if(err){
+          throw err
+        }
+        else{
+          res.status(200).send({
+            Message:'Playlist Generated'
+          })
+        }
+      })
+    }
+  }catch(error){
+    console.log(error)
+    res.status(404).send({
+      Message:'Error'
+    })
+  }
+})
 
 module.exports = router;

@@ -119,12 +119,13 @@ io.on("connection",(socket)=>{
             else{
                 console.log(result)
                 console.log(result.playlists);
-                result.screens.forEach(element => {
+                result.playlists.forEach(element => {
                     console.log(element)
-                    const ele = element.split("-")[0]
-                    io.emit('changevideo',{
-                        array:result.videos
-                    }) 
+                    if(ele.Device_id==clientID){
+                        io.emit(clientID,{                            
+                            array:result.playlists.video_array
+                        })
+                    }
                 });
             }
         })
