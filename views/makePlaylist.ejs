@@ -5,9 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Playlist</title>
+    <style>
+        html, body, .brackets {
+		width: 100%;
+		min-height: 100%;
+		font-family: "Arial", sans-serif;
+    background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+;
+	}
+    .listcontainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .list{
+        border: 5px solid white;
+    }
+    </style>
 </head>
 <body>
-    <h1>Hi</h1>
+    <div class="listcontainer">
+        <div class="list">
+            <h1>Hello</h1>
+        </div>
+    </div>
     <script>
         window.addEventListener('load',async ()=>{
             const res = await fetch("https://mologmedia.herokuapp.com/getVideos?username=chandansingh@gmail.com");
