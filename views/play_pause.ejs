@@ -170,6 +170,7 @@ fieldset {
             <button name="submit" type="button" id="contact-submit" data-submit="...Sending">Play/Pause</button>
           </fieldset>
         </form>
+        <p><h3>Screens (screen_code - screen name)</h3></p>
       </div>
       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
       <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
@@ -186,7 +187,7 @@ fieldset {
           const screens = $('.Screens').text().split(",")
           var html = []
           screens.forEach(element=>{
-            html.push(`<p><h3>${element}</h3></p>`)
+            html.push(`<p><h2>${element}</h2></p>`)
           })
           const reqd_html = html.join("")
           document.querySelector('.container').insertAdjacentHTML('afterend',reqd_html)
