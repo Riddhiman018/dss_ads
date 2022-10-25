@@ -65,7 +65,17 @@ router.get('/playlist_view',async (req,res)=>{
   res.render("makePlaylist",{username:req.query.username});
 });
 router.get('/play_pause_controls',async(req,res)=>{
-  res.render("play_pause")
+  //include username in the query
+  const us = user.findOne({
+    username:req.query.username
+  },function(error,result){
+    if(error){
+      console.log(error)
+    }
+    else{
+      res.render("play_pause",{screens:result.screens.join(",")})
+    }
+  })
 })
 
 router.get(
@@ -421,9 +431,7 @@ router.post('/generatePlaylist',async(req,res)=>{
           throw err
         }
         else{
-          res.status(200).send({
-            Message:'Playlist Generated'
-          })
+          res.status(200).send('Playlist Generated')
         }
       })
     }

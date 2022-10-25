@@ -22,8 +22,8 @@
 body {
   font-family: "Roboto", Helvetica, Arial, sans-serif;
   font-weight: 100;
-  font-size: 12px;
-  line-height: 30px;
+  font-size: 1.5rem;
+  line-height: 2rem;
   color: white;
   background: purple
 }
@@ -153,9 +153,13 @@ fieldset {
 .username{
     visibility: hidden;
 }
+.Screens{
+    visibility: hidden;
+}
     </style>
 </head>
 <body>
+    <div class="Screens"><%=screens%></div>
     <div class="container">  
         <form id="controls" action="" method="">
           <h3>Everidoor Device Controls</h3>
@@ -179,6 +183,13 @@ fieldset {
                 device_id:document.querySelector('#deviceID').value
             })
           })
+          const screens = $('.Screens').text().split(",")
+          var html = []
+          screens.forEach(element=>{
+            html.push(`<p><h3>${element}</h3></p>`)
+          })
+          const reqd_html = html.join("")
+          document.querySelector('.container').insertAdjacentHTML('afterend',reqd_html)
       </script>
 </body>
 </html>
