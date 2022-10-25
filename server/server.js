@@ -104,6 +104,9 @@ io.on("connection",(socket)=>{
             io.to(clientID).emit(`${clientID}-room-joined`) //No object being sent, simply an event to switch to display mode     
         }
     })
+    socket.on('play_pause',async(objt)=>{
+        io.to(objt.device_id).emit('play_pause_event')
+    })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
         console.log(objt)

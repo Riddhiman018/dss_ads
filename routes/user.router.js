@@ -64,6 +64,9 @@ router.get("/login", (req, res) => {
 router.get('/playlist_view',async (req,res)=>{
   res.render("makePlaylist",{username:req.query.username});
 });
+router.get('/play_pause_controls',async(req,res)=>{
+  res.render("play_pause")
+})
 
 router.get(
   "/auth/google",
@@ -401,7 +404,7 @@ router.post('/generatePlaylist',async(req,res)=>{
     if(usr){
       var video_array = []
       var indexnos = req.body.indexnos.split(",")
-      for(var i=0;i<indexnos;i++){
+      for(var i=0;i<indexnos.length;i++){
         video_array.push(usr.videos[indexnos[i]])
       }
       user.updateOne({
