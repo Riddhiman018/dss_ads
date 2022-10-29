@@ -108,6 +108,10 @@ io.on("connection",(socket)=>{
         console.log('Play_Pause_Event_received')
         io.to(objt.device_id).emit('play_pause_event')
     })
+    socket.on('device_location',async(objt)=>{
+        console.log('device_location_event_received')
+        io.to(objt.device_id).emit('getLocation')
+    })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
         console.log(objt)

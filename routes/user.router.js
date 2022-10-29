@@ -64,6 +64,9 @@ router.get("/login", (req, res) => {
 router.get('/playlist_view',async (req,res)=>{
   res.render("makePlaylist",{username:req.query.username});
 });
+router.get('/location_view',async (req,res)=>{
+  res.render("location",{username:req.query.username});
+});
 router.get('/play_pause_controls',async(req,res)=>{
   //include username in the query
   const us = user.findOne({
