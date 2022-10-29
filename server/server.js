@@ -114,6 +114,7 @@ io.on("connection",(socket)=>{
     })
     socket.on("locationDetails",(obj)=>{
         console.log(obj)
+        console.log(socket.room)
     })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
