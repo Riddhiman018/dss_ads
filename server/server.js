@@ -112,6 +112,9 @@ io.on("connection",(socket)=>{
         console.log('device_location_event_received')
         io.to(objt.device_id).emit('getLocation')
     })
+    socket.on("locationDetails",(obj)=>{
+        console.log(obj)
+    })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
         console.log(objt)
