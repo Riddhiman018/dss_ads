@@ -110,11 +110,14 @@ io.on("connection",(socket)=>{
     })
     socket.on('device_location',async(objt)=>{
         console.log('device_location_event_received')
-        io.to(objt.device_id).emit('getLocation')
+        socket.join(objt.username)
+        io.to(objt.device_id).emit('getLocation',{
+            username:objt.username
+        })
     })
     socket.on("locationDetails",(obj)=>{
         console.log(obj)
-        console.log(socket.rooms)
+        console.log(typeof(obj))
     })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)

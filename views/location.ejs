@@ -156,9 +156,13 @@ fieldset {
 .Screens{
     visibility: hidden;
 }
+.username{
+  visibility: hidden;
+}
     </style>
 </head>
 <body>
+    <div class="username"><%=username%></div>
     <div class="Screens"><%=screens%></div>
     <div class="container">  
         <form id="controls" action="" method="">
@@ -179,7 +183,9 @@ fieldset {
           const socket = io("https://mologmedia.herokuapp.com");
           const submitBtn = document.querySelector('#contact-submit')
           submitBtn.addEventListener('click',()=>{
+            //join user room
             socket.emit('device_location',{
+              username:$('.username').text(),
                 device_id:document.querySelector('#deviceID').value
             })
           })

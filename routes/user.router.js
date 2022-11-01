@@ -72,7 +72,7 @@ router.get('/location_view',async (req,res)=>{
       console.log(error)
     }
     else{
-      res.render("location",{screens:result.screens.join(",")})
+      res.render("location",{username:req.query.username,screens:result.screens.join(",")})
     }
   })
 });
