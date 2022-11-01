@@ -117,7 +117,9 @@ io.on("connection",(socket)=>{
     })
     socket.on("locationDetails",(obj)=>{
         console.log(obj)
-        console.log(typeof(obj))
+        io.to(obj.username).emit('location_received',{
+            location:`https://www.google.com/maps/search/?api=1&query=${obj.latitude}%2C${obj.longitude}`
+        })
     })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)

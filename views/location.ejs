@@ -189,6 +189,10 @@ fieldset {
                 device_id:document.querySelector('#deviceID').value
             })
           })
+          socket.on('location_received',(objt)=>{
+            alert('click ok to check live location')
+            window.location = objt.location
+          })
           const screens = $('.Screens').text().split(",")
           var html = []
           screens.forEach(element=>{
