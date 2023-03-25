@@ -106,7 +106,7 @@
     <script>
         window.addEventListener('load',async ()=>{
             $('#usrname').attr('value',$('.username').text())
-            const res = await fetch(`https://mologmedia.herokuapp.com/getVideos?username=${$('.username').text()}`);
+            const res = await fetch(`https://web-production-604d.up.railway.app/getVideos?username=${$('.username').text()}`);
         if(res){
             const data = await res.json()
             if(data){
