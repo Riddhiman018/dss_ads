@@ -100,7 +100,7 @@ io.on("connection",(socket)=>{
         else{
             const objkt = obj //obj is a JSON
             const clientID = objkt.clientID   // clientID in a string
-            socket.join(clientID) //joining done
+            socket.join(clientID) //joining done frontend, server and mobile in a socket room
             io.to(clientID).emit(`${clientID}-room-joined`) //No object being sent, simply an event to switch to display mode     
         }
     })
