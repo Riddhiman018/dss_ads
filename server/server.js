@@ -106,6 +106,7 @@ io.on("connection",(socket)=>{
     })
     socket.on('play_pause',async(objt)=>{
         console.log('Play_Pause_Event_received')
+        console.log(objt)
         io.to(objt.device_id).emit('play_pause_event')
     })
     socket.on('device_location',async(objt)=>{
