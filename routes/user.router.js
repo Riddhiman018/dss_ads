@@ -64,6 +64,40 @@ router.get("/login", (req, res) => {
 router.get('/playlist_view',async (req,res)=>{
   res.render("makePlaylist",{username:req.query.username});
 });
+router.get("/volume_details",async (req,res)=>{
+  try{
+    const us = user.findOne({
+      username:req.query.username
+    },function(error,result){
+      if(error){
+        console.log(error)
+      }
+      else{
+        res.render("Volume_controls",{username:req.query.username,screens:result.screens.join(",")})
+      }
+    })
+  } catch(e){
+    console.log(e);
+    res.status(404).send("Error in Volume_view");
+  }
+});
+router.get("/brightness_details",async (req,res)=>{
+  try{
+    const us = user.findOne({
+      username:req.query.username
+    },function(error,result){
+      if(error){
+        console.log(error)
+      }
+      else{
+        res.render("Brightness_controls",{username:req.query.username,screens:result.screens.join(",")})
+      }
+    })
+  } catch(e){
+    console.log(e);
+    res.status(404).send("Error in Brightness_view");
+  }
+})
 router.get('/location_view',async (req,res)=>{
   const us = user.findOne({
     username:req.query.username
@@ -454,5 +488,8 @@ router.post('/generatePlaylist',async(req,res)=>{
     })
   }
 })
+
+
+
 
 module.exports = router;

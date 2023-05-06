@@ -122,6 +122,55 @@ io.on("connection",(socket)=>{
             location:`https://www.google.com/maps/search/?api=1&query=${obj.latitude}%2C${obj.longitude}`
         })
     })
+    socket.on('get_volume_status', async (objt) => {
+        console.log('get_volume_status_event_received')
+        socket.join(objt.username)
+        io.to(objt.device_id).emit('getVolume', {
+            username: objt.username
+        })
+    })
+    socket.on("volumeDetails", (obj) => {
+        console.log(obj)
+        io.to(obj.username).emit('current_volume_status', {
+            volume_value:obj.volume_value
+        })
+    })
+    socket.on('update_volume',(objt)=>{
+        io.to(objt.device_id).emit('updateVolume',{
+            username:objt.username,
+            desired_volume:objt.volume
+        })
+    })
+    socket.on('volume_updated_from_device',(obj)=>{
+        io.to(obj.username).emit('volume_updated',{
+            volume:obj.volume
+        })
+    })
+    socket.on('get_Brightness_status', async (objt) => {
+        console.log('get_Brightness_status_event_received')
+        socket.join(objt.username)
+        io.to(objt.device_id).emit('getBrightness', {
+            username: objt.username
+        })
+    })
+
+    socket.on("BrightnessDetails", (obj) => {
+        console.log(obj)
+        io.to(obj.username).emit('current_Brightness_status', {
+            Brightness_value:obj.Brightness_value
+        })
+    })
+    socket.on('update_Brightness',(objt)=>{
+        io.to(objt.device_id).emit('updateBrightness',{
+            username:objt.username,
+            desired_Brightness:objt.Brightness
+        })
+    })
+    socket.on('Brightness_updated_from_device',(obj)=>{
+        io.to(obj.username).emit('Brightness_updated',{
+            Brightness:obj.Brightness
+        })
+    })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
         console.log(objt)

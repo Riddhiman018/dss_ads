@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Controls</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-weight: 100;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: white;
+  background: purple
+}
+
+.container {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+#contact input[type="text"],
+#contact input[type="email"],
+#contact input[type="tel"],
+#contact input[type="url"],
+#contact textarea,
+#contact button[type="submit"] {
+  font: 400 12px/16px "Roboto", Helvetica, Arial, sans-serif;
+}
+
+#contact {
+  background: #F9F9F9;
+  padding: 25px;
+  margin: 150px 0;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+#contact h3 {
+  display: block;
+  font-size: 30px;
+  font-weight: 300;
+  margin-bottom: 10px;
+  color: white;
+}
+
+#contact h4 {
+  margin: 5px 0 15px;
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+fieldset {
+  border: medium none !important;
+  margin: 0 0 10px;
+  min-width: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+#contact input[type="text"],
+#contact input[type="email"],
+#contact input[type="tel"],
+#contact input[type="url"],
+#contact textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  background: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+}
+
+#contact input[type="text"]:hover,
+#contact input[type="email"]:hover,
+#contact input[type="tel"]:hover,
+#contact input[type="url"]:hover,
+#contact textarea:hover {
+  -webkit-transition: border-color 0.3s ease-in-out;
+  -moz-transition: border-color 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out;
+  border: 1px solid #aaa;
+}
+
+#contact textarea {
+  height: 100px;
+  max-width: 100%;
+  resize: none;
+}
+
+#contact button[type="submit"] {
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  background: #4CAF50;
+  color: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+#contact button[type="submit"]:hover {
+  background: #43A047;
+  -webkit-transition: background 0.3s ease-in-out;
+  -moz-transition: background 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
+}
+
+#contact button[type="submit"]:active {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.copyright {
+  text-align: center;
+}
+
+#contact input:focus,
+#contact textarea:focus {
+  outline: 0;
+  border: 1px solid #aaa;
+}
+
+::-webkit-input-placeholder {
+  color: #888;
+}
+
+:-moz-placeholder {
+  color: #888;
+}
+
+::-moz-placeholder {
+  color: #888;
+}
+
+:-ms-input-placeholder {
+  color: #888;
+}
+.username{
+    visibility: hidden;
+}
+.Screens{
+    visibility: hidden;
+}
+    </style>
+</head>
+<body>
+    <div class="username"><%=username%></div>
+    <div class="Screens"><%=screens%></div>
+    <div class="container">  
+        <form id="controls" action="" method="">
+          <h3>Everidoor Device Brightness Controls</h3>
+          <fieldset>
+            <input placeholder="Device ID" type="text" tabindex="1" required autofocus id = "deviceID">
+          </fieldset>
+          <fieldset>
+            <button name="submit" type="button" id="contact-submit" data-submit="...Sending">Get Status</button>
+          </fieldset>
+          <fieldset>
+            <input placeholder="Brightness Level" type="text" tabindex="1" required autofocus id = "deviceBrightness">
+          </fieldset>
+          <fieldset>
+            <button name="submit_Brightness" type="button" id="update-submit" data-submit="...Sending">Update Brightness</button>
+          </fieldset>
+        </form>
+      </div>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.13.4/underscore-umd-min.js"></script>
+      <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script> -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+      <script>
+          const socket = io("https://dssads-production.up.railway.app/");
+          const submitBtn = document.querySelector('#contact-submit')
+          const updateBtn = document.querySelector('#update-submit')
+          submitBtn.addEventListener('click',()=>{
+            socket.emit('get_Brightness_status',{
+                username:$('.username').text(),
+                device_id:document.querySelector('#deviceID').value
+            })
+          })
+          socket.on('current_Brightness_status',(obj)=>{
+            document.querySelector('#deviceBrightness').value = obj.Brightness_value 
+          })
+          updateBtn.addEventListener('click',()=>{
+            socket.emit('update_Brightness',{
+            username:$('.username').text(),
+            device_id:document.querySelector('#deviceID').value,
+            Brightness: document.querySelector('#deviceBrightness').value
+          })
+          })
+          socket.on('Brightness_updated',()=>{
+            alert('Brightness Updated')
+          })
+          const screens = $('.Screens').text().split(",")
+          var html = []
+          screens.forEach(element=>{
+            html.push(`<p><h4>${element}</h4></p>`)
+          })
+          const reqd_html = "<p><h3>Screens (screen_code - screen name)</h3></p>"+html.join("")
+          document.querySelector('.container').insertAdjacentHTML('afterend',reqd_html)
+      </script>
+</body>
+</html>
