@@ -90,7 +90,7 @@ router.get("/brightness_details",async (req,res)=>{
         console.log(error)
       }
       else{
-        res.render("Brightness_controls",{username:req.query.username,screens:result.screens.join(",")})
+        res.render("Brightness_Controls",{username:req.query.username,screens:result.screens.join(",")})
       }
     })
   } catch(e){
