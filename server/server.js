@@ -171,6 +171,9 @@ io.on("connection",(socket)=>{
             Brightness:obj.Brightness
         })
     })
+    socket.on('disconnecting',async (req,res)=>{
+        console.log(socket.rooms);
+    })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
         console.log(objt)
