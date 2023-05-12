@@ -173,6 +173,9 @@ io.on("connection",(socket)=>{
     })
     socket.on('disconnecting',async (req,res)=>{
         console.log(socket.rooms);
+        console.log(socket.rooms[0]);
+        console.log(socket.rooms[1]);
+        console.log(socket.rooms[2]);
     })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
