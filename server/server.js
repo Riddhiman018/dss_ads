@@ -172,10 +172,10 @@ io.on("connection",(socket)=>{
         })
     })
     socket.on('disconnecting',async (req,res)=>{
-        console.log(socket.rooms);
-        console.log(socket.rooms[0]);
-        console.log(socket.rooms[1]);
-        console.log(socket.rooms[2]);
+        console.log('Disconnect event log');
+        const room_arr = Array.from(socket.rooms)
+        console.log(room_arr)
+        console.log(room_arr[1])
     })
     socket.on("changevideo",async (objt)=>{
         console.log(socket.id)
